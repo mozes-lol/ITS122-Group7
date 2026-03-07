@@ -25,3 +25,12 @@ Route::prefix('admin')->group(function () {
 Route::prefix('coach')->group(function () {
     Route::get('/dashboard', [CoachController::class, 'dashboard']);
 });
+
+/*
+|--------------------------------------------------------------------------
+| Member Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('member')->group(function () {
+    Route::get('/dashboard', [MemberController::class, 'dashboard']);
+});
