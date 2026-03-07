@@ -32,5 +32,9 @@ Route::prefix('coach')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('member')->group(function () {
-    Route::get('/dashboard', [MemberController::class, 'dashboard']);
+   Route::get('/dashboard', function () { return view('member.dashboard'); });
+    Route::get('/history', function () { return view('member.history'); });
+    Route::get('/create-log', function () { return view('member.create_log'); });
+    Route::get('/profile', function () { return view('member.profile'); });
+    Route::get('/achievements', function () { return view('member.achievements'); });
 });
