@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CoachController;
+use App\Http\Controllers\MemberController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -10,11 +11,43 @@ Route::get('/', function () {
 
 /*
 |--------------------------------------------------------------------------
+| Authentication Routes (Testing)
+|--------------------------------------------------------------------------
+*/
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+
+Route::post('/login', function () {
+    // TODO: Implement login logic
+    return redirect('/dashboard');
+});
+
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
+
+Route::post('/register', function () {
+    // TODO: Implement registration logic
+    return redirect('/login');
+});
+
+Route::post('/logout', function () {
+    // TODO: Implement logout logic
+    return redirect('/');
+})->name('logout');
+
+/*
+|--------------------------------------------------------------------------
 | Admin Routes
 |--------------------------------------------------------------------------
 */
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/dashboard', [AdminController::class, 'dashboard']);
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::get('/achievements', [AdminController::class, 'achievements'])->name('achievements');
+    Route::get('/analytics', [AdminController::class, 'analytics'])->name('analytics');
 });
 
 /*
@@ -22,8 +55,13 @@ Route::prefix('admin')->group(function () {
 | Coach Routes
 |--------------------------------------------------------------------------
 */
-Route::prefix('coach')->group(function () {
+Route::prefix('coach')->name('coach.')->group(function () {
+    Route::get('/', [CoachController::class, 'dashboard'])->name('dashboard');
     Route::get('/dashboard', [CoachController::class, 'dashboard']);
+    Route::get('/archers', [CoachController::class, 'archers'])->name('archers');
+    Route::get('/training-logs', [CoachController::class, 'trainingLogs'])->name('training-logs');
+    Route::get('/profile', [CoachController::class, 'profile'])->name('profile');
+    Route::get('/achievements', [CoachController::class, 'achievements'])->name('achievements');
 });
 
 /*
@@ -31,10 +69,21 @@ Route::prefix('coach')->group(function () {
 | Member Routes
 |--------------------------------------------------------------------------
 */
-Route::prefix('member')->group(function () {
-   Route::get('/dashboard', function () { return view('member.dashboard'); });
-    Route::get('/history', function () { return view('member.history'); });
-    Route::get('/create-log', function () { return view('member.create_log'); });
-    Route::get('/profile', function () { return view('member.profile'); });
-    Route::get('/achievements', function () { return view('member.achievements'); });
+Route::prefix('member')->name('member.')->group(function () {
+    Route::get('/', [MemberController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [MemberController::class, 'dashboard']);
+    Route::get('/history', [MemberController::class, 'history'])->name('history');
+    Route::get('/profile', [MemberController::class, 'profile'])->name('profile');
+    Route::get('/achievements', [MemberController::class, 'achievements'])->name('achievements');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Dashboard Redirect Route
+|--------------------------------------------------------------------------
+*/
+Route::get('/dashboard', function () {
+    // TODO: Redirect based on user role
+    return redirect('/member/dashboard');
+});
+

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<achievements xmlns="http://archery.club/achievements">
+    <metadata>
+        <system>Pasig Archery Club Management System</system>
+        <dataType>System Achievements Database</dataType>
+        <lastUpdated>2026-03-10</lastUpdated>
+        <totalAchievements>8</totalAchievements>
+    </metadata>
+
+    <achievement id="ach001" icon="🏆">
+        <name>Marksman</name>
+        <description>Achieved 90% accuracy in training</description>
+        <criteria>
+            <requirement type="accuracy" value="90"/>
+        </criteria>
+        <category>Accuracy</category>
+        <pointsRewarded>100</pointsRewarded>
+        <totalAwarded>12</totalAwarded>
+        <createdDate>2025-01-10</createdDate>
+    </achievement>
+
+    <achievement id="ach002" icon="🎯">
+        <name>Sharpshooter</name>
+        <description>Completed 20 training sessions</description>
+        <criteria>
+            <requirement type="sessions" value="20"/>
+        </criteria>
+        <category>Consistency</category>
+        <pointsRewarded>75</pointsRewarded>
+        <totalAwarded>18</totalAwarded>
+        <createdDate>2025-01-05</createdDate>
+    </achievement>
+
+    <achievement id="ach003" icon="⭐">
+        <name>Dedicated Archer</name>
+        <description>40+ hours of training completed</description>
+        <criteria>
+            <requirement type="hours" value="40"/>
+        </criteria>
+        <category>Dedication</category>
+        <pointsRewarded>50</pointsRewarded>
+        <totalAwarded>8</totalAwarded>
+        <createdDate>2024-12-20</createdDate>
+    </achievement>
+
+    <achievement id="ach004" icon="🔥">
+        <name>On Fire</name>
+        <description>5 consecutive perfect training sessions</description>
+        <criteria>
+            <requirement type="consecutiveSessions" value="5"/>
+            <requirement type="perfectScore" value="true"/>
+        </criteria>
+        <category>Streak</category>
+        <pointsRewarded>150</pointsRewarded>
+        <totalAwarded>3</totalAwarded>
+        <createdDate>2024-11-28</createdDate>
+    </achievement>
+
+    <achievement id="ach005" icon="🏅">
+        <name>Team Player</name>
+        <description>Mentored 3 or more new members</description>
+        <criteria>
+            <requirement type="mentorCount" value="3"/>
+        </criteria>
+        <category>Leadership</category>
+        <pointsRewarded>80</pointsRewarded>
+        <totalAwarded>6</totalAwarded>
+        <createdDate>2024-10-15</createdDate>
+    </achievement>
+
+    <achievement id="ach006" icon="💎">
+        <name>Elite Archer</name>
+        <description>Reached Advanced skill level</description>
+        <criteria>
+            <requirement type="skillLevel" value="Advanced"/>
+        </criteria>
+        <category>Skill</category>
+        <pointsRewarded>120</pointsRewarded>
+        <totalAwarded>4</totalAwarded>
+        <createdDate>2024-09-30</createdDate>
+    </achievement>
+
+    <achievement id="ach007" icon="🌟">
+        <name>Rising Star</name>
+        <description>Most improved archer of the month</description>
+        <criteria>
+            <requirement type="improvementRate" value="high"/>
+            <requirement type="awardType" value="monthly"/>
+        </criteria>
+        <category>Progress</category>
+        <pointsRewarded>90</pointsRewarded>
+        <totalAwarded>5</totalAwarded>
+        <createdDate>2024-08-20</createdDate>
+    </achievement>
+
+    <achievement id="ach008" icon="🎖️">
+        <name>Champion</name>
+        <description>First place in monthly competition tournament</description>
+        <criteria>
+            <requirement type="placement" value="1"/>
+            <requirement type="competitionType" value="tournament"/>
+        </criteria>
+        <category>Competition</category>
+        <pointsRewarded>200</pointsRewarded>
+        <totalAwarded>7</totalAwarded>
+        <createdDate>2024-07-10</createdDate>
+    </achievement>
+</achievements>

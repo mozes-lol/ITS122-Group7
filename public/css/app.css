@@ -63,7 +63,7 @@ a {
 }
 
 a:hover {
-    color: #5568d3;
+    color: #2563eb;
     text-decoration: underline;
 }
 
@@ -142,7 +142,7 @@ select:focus,
 textarea:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 textarea {
@@ -176,9 +176,9 @@ textarea {
 }
 
 .btn-primary:hover {
-    background-color: #5568d3;
+    background-color: #2563eb;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
 }
 
 .btn-secondary {
@@ -187,7 +187,7 @@ textarea {
 }
 
 .btn-secondary:hover {
-    background-color: #663a8e;
+    background-color: #1e40af;
 }
 
 .btn-success {
@@ -311,27 +311,49 @@ textarea {
     height: 100vh;
     overflow-y: auto;
     z-index: 1000;
+    transition: width 0.3s ease;
 }
 
 .sidebar-header {
     margin-bottom: 2rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .sidebar-header h2 {
     font-size: 1.25rem;
-    margin-bottom: 0.3rem;
+    margin: 0;
     color: white;
 }
 
-.sidebar-header p {
-    font-size: 0.8rem;
-    opacity: 0.9;
+.sidebar-toggle {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.sidebar-toggle:hover {
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .sidebar-menu {
     list-style: none;
+}
+
+.sidebar-menu h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 1.5rem 0 0.75rem;
+    font-weight: 600;
 }
 
 .sidebar-menu li {
@@ -339,7 +361,9 @@ textarea {
 }
 
 .sidebar-menu a {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
     padding: 0.75rem 1rem;
     color: white;
     text-decoration: none;
@@ -351,7 +375,18 @@ textarea {
 .sidebar-menu a:hover,
 .sidebar-menu a.active {
     background-color: rgba(255, 255, 255, 0.2);
-    padding-left: 1.25rem;
+}
+
+.sidebar-menu a .icon {
+    font-size: 1.2rem;
+    min-width: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-menu a .label {
+    white-space: nowrap;
 }
 
 .sidebar-logout {
@@ -360,12 +395,58 @@ textarea {
     padding-top: 1.5rem;
 }
 
-.sidebar-logout a {
-    background-color: rgba(255, 255, 255, 0.1);
+.sidebar-logout button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    justify-content: center;
 }
 
-.sidebar-logout a:hover {
-    background-color: var(--danger);
+.sidebar-logout button .icon {
+    font-size: 1.2rem;
+}
+
+.sidebar-logout button .label {
+    white-space: nowrap;
+}
+
+/* COLLAPSED STATE */
+.sidebar.collapsed {
+    width: 80px;
+    padding: 1rem 0.5rem;
+}
+
+.sidebar.collapsed .sidebar-header {
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.sidebar.collapsed .sidebar-header h2 {
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.sidebar.collapsed .sidebar-menu h3 {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar-menu a {
+    justify-content: center;
+    padding: 0.75rem;
+}
+
+.sidebar.collapsed .sidebar-menu a .label {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar-logout button {
+    justify-content: center;
+    padding: 0.75rem;
+}
+
+.sidebar.collapsed .sidebar-logout button .label {
+    display: none;
 }
 
 /* ========================================
@@ -376,6 +457,11 @@ textarea {
     margin-left: 250px;
     flex: 1;
     padding: 2rem;
+    transition: margin-left 0.3s ease;
+}
+
+.main-content.sidebar-collapsed {
+    margin-left: 80px;
 }
 
 /* ========================================

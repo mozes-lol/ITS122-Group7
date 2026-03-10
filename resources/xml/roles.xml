@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<roles xmlns="http://archery.club/roles">
+    <description>Role-Based Access Control (RBAC) Configuration for Pasig Archery Club Management System</description>
+    
+    <!-- ADMIN ROLE -->
+    <role id="admin" name="Administrator">
+        <description>System administrator with full access to all features</description>
+        <permissions>
+            <permission id="view_dashboard">View Admin Dashboard</permission>
+            <permission id="manage_users">Manage All Users (Add, Edit, Delete)</permission>
+            <permission id="manage_coaches">Manage Coaches and Instructors</permission>
+            <permission id="manage_members">Manage Members and Athletes</permission>
+            <permission id="manage_achievements">Create and Manage Achievements</permission>
+            <permission id="view_analytics">View System Analytics and Reports</permission>
+            <permission id="view_training_logs">View All Training Logs</permission>
+            <permission id="system_settings">Configure System Settings</permission>
+            <permission id="export_reports">Export Reports and Data</permission>
+            <permission id="audit_logs">View Audit Logs</permission>
+        </permissions>
+        <menu-items>
+            <menu href="/admin" label="Dashboard" icon="📊"/>
+            <menu href="/admin/users" label="User Management" icon="👥"/>
+            <menu href="/admin/achievements" label="Achievements Management" icon="🏆"/>
+            <menu href="/admin/analytics" label="Analytics Report" icon="📈"/>
+        </menu-items>
+    </role>
+
+    <!-- COACH ROLE -->
+    <role id="coach" name="Coach">
+        <description>Coach with access to athlete management and training logs</description>
+        <permissions>
+            <permission id="view_dashboard">View Coach Dashboard</permission>
+            <permission id="view_assigned_archers">View Assigned Athletes</permission>
+            <permission id="manage_archer_profile">Edit Athlete Profiles</permission>
+            <permission id="create_training_logs">Create Training Logs for Athletes</permission>
+            <permission id="view_training_logs">View Training Logs</permission>
+            <permission id="award_achievements">Award Achievements to Athletes</permission>
+            <permission id="view_athlete_stats">View Athlete Statistics</permission>
+            <permission id="edit_own_profile">Edit Own Profile</permission>
+            <permission id="view_own_achievements">View Own Achievements</permission>
+        </permissions>
+        <menu-items>
+            <menu href="/coach" label="Dashboard" icon="📊"/>
+            <menu href="/coach/archers" label="Archers List" icon="🎯"/>
+            <menu href="/coach/training-logs" label="Training Logs" icon="📝"/>
+            <menu href="/coach/profile" label="My Profile" icon="👤"/>
+            <menu href="/coach/achievements" label="My Achievements" icon="🏆"/>
+        </menu-items>
+    </role>
+
+    <!-- MEMBER ROLE -->
+    <role id="member" name="Member/Archer">
+        <description>Regular member with access to own training data and achievements</description>
+        <permissions>
+            <permission id="view_dashboard">View Member Dashboard</permission>
+            <permission id="view_own_training_history">View Own Training History</permission>
+            <permission id="create_training_log">Create Own Training Logs</permission>
+            <permission id="edit_own_training_log">Edit Own Training Logs</permission>
+            <permission id="delete_own_training_log">Delete Own Training Logs</permission>
+            <permission id="view_own_achievements">View Own Achievements</permission>
+            <permission id="edit_own_profile">Edit Own Profile</permission>
+            <permission id="view_own_stats">View Own Training Statistics</permission>
+        </permissions>
+        <menu-items>
+            <menu href="/member" label="Dashboard" icon="📊"/>
+            <menu href="/member/history" label="Training History" icon="📚"/>
+            <menu href="/member/profile" label="My Profile" icon="👤"/>
+            <menu href="/member/achievements" label="My Achievements" icon="🏆"/>
+        </menu-items>
+    </role>
+
+    <!-- GUEST ROLE (Unauthenticated) -->
+    <role id="guest" name="Guest">
+        <description>Unauthenticated user with limited access</description>
+        <permissions>
+            <permission id="view_login_page">View Login Page</permission>
+            <permission id="view_register_page">View Registration Page</permission>
+            <permission id="access_public_pages">Access Public Pages</permission>
+        </permissions>
+        <restricted-access>
+            <restriction page="/admin" />
+            <restriction page="/coach" />
+            <restriction page="/member" />
+        </restricted-access>
+    </role>
+</roles>
