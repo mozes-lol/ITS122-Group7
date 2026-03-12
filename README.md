@@ -1,15 +1,27 @@
 
 # ITS122-Group7
 
+Programs needed: Php & Composer
+
 To run:</br>
-> cmd</br>
-> go to directory until you reach ArcherSys folder</br>
-> to go back "cd .." </br>
-> to go to a folder "cd  foldername/foldername/ArcherSys"</br>
+> open cmd</br>
+> cd to main folder directory
+> "php -v"
+> "composer -v"
+> "composer install"
 > "php artisan serve"</br>
 > ctrl+click on http link</br>
 
+test emails for login:</br>
 
+Email: admin@test.com</br>
+Password: password123</br>
+
+Email: coach@test.com</br>
+Password: password123</br>
+
+Email: member@test.com</br>
+Password: password123</br>
 
 
 
