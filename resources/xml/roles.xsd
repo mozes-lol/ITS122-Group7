@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           targetNamespace="http://archery.club/roles"
+           xmlns="http://archery.club/roles"
+           elementFormDefault="qualified">
+    
+    <xs:annotation>
+        <xs:documentation>
+            XML Schema (XSD) for Pasig Archery Club Management System
+            Defines the structure and validation rules for the roles configuration
+        </xs:documentation>
+    </xs:annotation>
+
+    <!-- Root Element: roles -->
+    <xs:element name="roles">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="description" type="xs:string"/>
+                <xs:element name="role" type="RoleType" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Complex Type: RoleType -->
+    <xs:complexType name="RoleType">
+        <xs:sequence>
+            <xs:element name="description" type="xs:string"/>
+            <xs:element name="permissions" type="PermissionsType"/>
+            <xs:choice minOccurs="0">
+                <xs:element name="menu-items" type="MenuItemsType"/>
+                <xs:element name="restricted-access" type="RestrictedAccessType"/>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:ID" use="required"/>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <!-- Complex Type: PermissionsType -->
+    <xs:complexType name="PermissionsType">
+        <xs:sequence>
+            <xs:element name="permission" type="PermissionType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Complex Type: PermissionType -->
+    <xs:complexType name="PermissionType" mixed="true">
+        <xs:attribute name="id" type="xs:ID" use="required"/>
+    </xs:complexType>
+
+    <!-- Complex Type: MenuItemsType -->
+    <xs:complexType name="MenuItemsType">
+        <xs:sequence>
+            <xs:element name="menu" type="MenuType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Complex Type: MenuType -->
+    <xs:complexType name="MenuType">
+        <xs:attribute name="href" type="xs:anyURI" use="required"/>
+        <xs:attribute name="label" type="xs:string" use="required"/>
+        <xs:attribute name="icon" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <!-- Complex Type: RestrictedAccessType -->
+    <xs:complexType name="RestrictedAccessType">
+        <xs:sequence>
+            <xs:element name="restriction" type="RestrictionType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Complex Type: RestrictionType -->
+    <xs:complexType name="RestrictionType">
+        <xs:attribute name="page" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <!-- Key/Unique Constraints -->
+    <xs:key name="RoleIdKey">
+        <xs:selector xpath=".//role"/>
+        <xs:field xpath="@id"/>
+    </xs:key>
+
+    <xs:key name="PermissionIdKey">
+        <xs:selector xpath=".//permission"/>
+        <xs:field xpath="@id"/>
+    </xs:key>
+
+</xs:schema>

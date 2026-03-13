@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Document Type Definition (DTD) for Pasig Archery Club Management System
+    Defines the structure and validation rules for roles.xml
+-->
+
+<!ELEMENT roles (description, role+)>
+<!ATTLIST roles xmlns CDATA #IMPLIED>
+
+<!ELEMENT description (#PCDATA)>
+
+<!ELEMENT role (description, permissions, (menu-items | restricted-access)?)>
+<!ATTLIST role 
+    id ID #REQUIRED
+    name CDATA #REQUIRED
+>
+
+<!ELEMENT permissions (permission+)>
+
+<!ELEMENT permission (#PCDATA)>
+<!ATTLIST permission 
+    id ID #REQUIRED
+>
+
+<!ELEMENT menu-items (menu+)>
+
+<!ELEMENT menu EMPTY>
+<!ATTLIST menu 
+    href CDATA #REQUIRED
+    label CDATA #REQUIRED
+    icon CDATA #IMPLIED
+>
+
+<!ELEMENT restricted-access (restriction+)>
+
+<!ELEMENT restriction EMPTY>
+<!ATTLIST restriction 
+    page CDATA #REQUIRED
+>
+
+<!--
+    Entity References (if needed for constants)
+-->
+<!ENTITY appName "Pasig Archery Club Management System">
+<!ENTITY version "1.0">
+<!ENTITY lastUpdated "2026-03-10">

@@ -8,16 +8,22 @@ use Illuminate\Support\Facades\Session;
 
 class RoleMiddleware
 {
-    public function handle(Request $request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, string $role)
     {
-        $user = Session::get('user');
-
-        if (!$user) {
+        if (!Session::has('user_id')) {
             return redirect('/login');
         }
 
-        if ($user->role->role_name != $role) {
-            return abort(403, 'Unauthorized access');
+        $roleId = Session::get('role_id');
+
+        $roles = [
+            'admin' => 1,
+            'coach' => 2,
+            'member' => 3
+        ];
+
+        if (!isset($roles[$role]) || $roleId != $roles[$role]) {
+            return redirect('/login');
         }
 
         return $next($request);
