@@ -1,6 +1,9 @@
 # ITS122-Group7
 
-Programs needed: Php & Composer
+Programs needed: Php & Composer</br>
+Php extensionn: </br>
+;extension=pdo_pgsql</br>
+;extension=pgsql</br>
 
 To run:</br>
 > open cmd</br>
