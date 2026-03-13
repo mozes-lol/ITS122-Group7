@@ -5,10 +5,10 @@ Programs needed: Php & Composer
 
 To run:</br>
 > open cmd</br>
-> cd to main folder directory
-> "php -v"
-> "composer -v"
-> "composer install"
+> cd to main folder directory</br>
+> "php -v"</br>
+> "composer -v"</br>
+> "composer install"</br>
 > "php artisan serve"</br>
 > ctrl+click on http link</br>
 
