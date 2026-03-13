@@ -25,6 +25,8 @@ Password: password123</br>
 Email: member@test.com</br>
 Password: password123</br>
 
+Email: member@test.com</br>
+Password: password123</br>
 
 
 

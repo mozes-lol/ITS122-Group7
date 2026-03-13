@@ -1,3 +1,8 @@
+<html>
+<head>
+    <title>Login Placeholder</title>
+</head>
+<body>
 @extends('layouts.auth')
 
 @section('title', 'Login')
