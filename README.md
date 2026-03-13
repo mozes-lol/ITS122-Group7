@@ -1,7 +1,9 @@
-
 # ITS122-Group7
 
-Programs needed: Php & Composer
+Programs needed: Php & Composer</br>
+Php extensionn: </br>
+;extension=pdo_pgsql</br>
+;extension=pgsql</br>
 
 To run:</br>
 > open cmd</br>
@@ -18,6 +20,9 @@ Email: admin@test.com</br>
 Password: password123</br>
 
 Email: coach@test.com</br>
+Password: password123</br>
+
+Email: member@test.com</br>
 Password: password123</br>
 
 Email: member@test.com</br>
