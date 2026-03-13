@@ -20,15 +20,15 @@
         <!-- Summary Stats -->
         <div class="stats-row">
             <div class="stat-box">
-                <div class="stat-number">245</div>
+                <div class="stat-number">{{ $stats['total_users'] ?? 0 }}</div>
                 <div class="stat-label">Total Users</div>
             </div>
             <div class="stat-box">
-                <div class="stat-number">24</div>
+                <div class="stat-number">{{ $stats['new_users_month'] ?? 0 }}</div>
                 <div class="stat-label">New Users Per Month</div>
             </div>
             <div class="stat-box">
-                <div class="stat-number">156</div>
+                <div class="stat-number">{{ $stats['active_sessions_month'] ?? 0 }}</div>
                 <div class="stat-label">Active Sessions Per Month</div>
             </div>
         </div>
@@ -41,32 +41,38 @@
                 <h2>User Distribution by Role</h2>
             </div>
             <div class="card-body">
+                @php
+                    $total = max(1, ($stats['members'] ?? 0) + ($stats['coaches'] ?? 0) + ($stats['admins'] ?? 0));
+                    $memberPct = round((($stats['members'] ?? 0) / $total) * 100);
+                    $coachPct = round((($stats['coaches'] ?? 0) / $total) * 100);
+                    $adminPct = round((($stats['admins'] ?? 0) / $total) * 100);
+                @endphp
                 <div style="padding: 1rem 0;">
                     <div style="margin-bottom: 1.5rem;">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                             <span>Members</span>
-                            <strong>210 (86%)</strong>
+                            <strong>{{ $stats['members'] ?? 0 }} ({{ $memberPct }}%)</strong>
                         </div>
                         <div style="height: 20px; background: #f0f0f0; border-radius: 10px; overflow: hidden;">
-                            <div style="height: 100%; width: 86%; background: #10b981;"></div>
+                            <div style="height: 100%; width: {{ $memberPct }}%; background: #10b981;"></div>
                         </div>
                     </div>
                     <div style="margin-bottom: 1.5rem;">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                             <span>Coaches</span>
-                            <strong>12 (5%)</strong>
+                            <strong>{{ $stats['coaches'] ?? 0 }} ({{ $coachPct }}%)</strong>
                         </div>
                         <div style="height: 20px; background: #f0f0f0; border-radius: 10px; overflow: hidden;">
-                            <div style="height: 100%; width: 5%; background: #f59e0b;"></div>
+                            <div style="height: 100%; width: {{ $coachPct }}%; background: #f59e0b;"></div>
                         </div>
                     </div>
                     <div>
                         <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                             <span>Admins</span>
-                            <strong>2 (1%)</strong>
+                            <strong>{{ $stats['admins'] ?? 0 }} ({{ $adminPct }}%)</strong>
                         </div>
                         <div style="height: 20px; background: #f0f0f0; border-radius: 10px; overflow: hidden;">
-                            <div style="height: 100%; width: 1%; background: #ef4444;"></div>
+                            <div style="height: 100%; width: {{ $adminPct }}%; background: #ef4444;"></div>
                         </div>
                     </div>
                 </div>
@@ -80,13 +86,13 @@
             </div>
             <div class="card-body">
                 <div style="height: 150px; display: flex; align-items: flex-end; gap: 0.5rem; padding: 1rem 0;">
-                    <div style="flex: 1; background: #667eea; height: 60%; display: flex; align-items: flex-end; justify-content: center; border-radius: 4px; color: white; font-size: 0.75rem;">22</div>
-                    <div style="flex: 1; background: #764ba2; height: 75%; display: flex; align-items: flex-end; justify-content: center; border-radius: 4px; color: white; font-size: 0.75rem;">28</div>
-                    <div style="flex: 1; background: #667eea; height: 45%; display: flex; align-items: flex-end; justify-content: center; border-radius: 4px; color: white; font-size: 0.75rem;">17</div>
-                    <div style="flex: 1; background: #764ba2; height: 90%; display: flex; align-items: flex-end; justify-content: center; border-radius: 4px; color: white; font-size: 0.75rem;">34</div>
-                    <div style="flex: 1; background: #667eea; height: 55%; display: flex; align-items: flex-end; justify-content: center; border-radius: 4px; color: white; font-size: 0.75rem;">21</div>
-                    <div style="flex: 1; background: #764ba2; height: 80%; display: flex; align-items: flex-end; justify-content: center; border-radius: 4px; color: white; font-size: 0.75rem;">30</div>
-                    <div style="flex: 1; background: #667eea; height: 70%; display: flex; align-items: flex-end; justify-content: center; border-radius: 4px; color: white; font-size: 0.75rem;">26</div>
+                    <div style="flex: 1; background: #667eea; height: 60%; display: flex; align-items: flex-end; justify-content: center; border-radius: 4px; color: white; font-size: 0.75rem;">{{ $stats['active_sessions_month'] ?? 0 }}</div>
+                    <div style="flex: 1; background: #764ba2; height: 75%; display: flex; align-items: flex-end; justify-content: center; border-radius: 4px; color: white; font-size: 0.75rem;">{{ $stats['active_sessions_month'] ?? 0 }}</div>
+                    <div style="flex: 1; background: #667eea; height: 45%; display: flex; align-items: flex-end; justify-content: center; border-radius: 4px; color: white; font-size: 0.75rem;">{{ $stats['active_sessions_month'] ?? 0 }}</div>
+                    <div style="flex: 1; background: #764ba2; height: 90%; display: flex; align-items: flex-end; justify-content: center; border-radius: 4px; color: white; font-size: 0.75rem;">{{ $stats['active_sessions_month'] ?? 0 }}</div>
+                    <div style="flex: 1; background: #667eea; height: 55%; display: flex; align-items: flex-end; justify-content: center; border-radius: 4px; color: white; font-size: 0.75rem;">{{ $stats['active_sessions_month'] ?? 0 }}</div>
+                    <div style="flex: 1; background: #764ba2; height: 80%; display: flex; align-items: flex-end; justify-content: center; border-radius: 4px; color: white; font-size: 0.75rem;">{{ $stats['active_sessions_month'] ?? 0 }}</div>
+                    <div style="flex: 1; background: #667eea; height: 70%; display: flex; align-items: flex-end; justify-content: center; border-radius: 4px; color: white; font-size: 0.75rem;">{{ $stats['active_sessions_month'] ?? 0 }}</div>
                 </div>
                 <div style="display: flex; justify-content: space-around; font-size: 0.8rem; color: #666; margin-top: 1rem;">
                     <span>Mon</span>

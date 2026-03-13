@@ -3,106 +3,210 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class MemberController extends Controller
 {
-    /**
-     * Display member dashboard
-     */
     public function dashboard()
     {
-        return view('member.dashboard');
+        $archer = DB::table('archers')->where('user_id', Session::get('user_id'))->first();
+
+        $stats = [
+            'total_sessions' => 0,
+            'achievements' => 0,
+            'experience_level' => $archer->experience_level ?? 'N/A',
+        ];
+
+        $recentLogs = collect();
+
+        if ($archer) {
+            $stats['total_sessions'] = DB::table('training_logs')
+                ->where('archer_id', $archer->archer_id)
+                ->count();
+
+            $stats['achievements'] = DB::table('user_achievements')
+                ->where('archer_id', $archer->archer_id)
+                ->count();
+
+            $recentLogs = DB::table('training_logs')
+                ->where('archer_id', $archer->archer_id)
+                ->orderByDesc('session_date')
+                ->limit(3)
+                ->get();
+        }
+
+        return view('member.dashboard', compact('stats', 'recentLogs'));
     }
 
-    /**
-     * Display training history
-     */
     public function history()
     {
-        return view('member.history');
+        $archer = DB::table('archers')->where('user_id', Session::get('user_id'))->first();
+        $logs = collect();
+
+        if ($archer) {
+            $logs = DB::table('training_logs as tl')
+                ->join('coaches as c', 'tl.coach_id', '=', 'c.coach_id')
+                ->join('users as u', 'c.user_id', '=', 'u.user_id')
+                ->select(
+                    'tl.log_id',
+                    'tl.session_date',
+                    'tl.arrow_count',
+                    'tl.distance',
+                    'tl.total_score',
+                    'tl.coach_rating',
+                    'tl.technical_notes',
+                    DB::raw("u.first_name || ' ' || u.last_name as coach_name")
+                )
+                ->where('tl.archer_id', $archer->archer_id)
+                ->orderByDesc('tl.session_date')
+                ->get();
+        }
+
+        return view('member.history', compact('logs'));
     }
 
-    /**
-     * Display member profile
-     */
     public function profile()
     {
-        return view('member.profile');
+        $user = DB::table('users')->where('user_id', Session::get('user_id'))->first();
+        $archer = DB::table('archers')->where('user_id', Session::get('user_id'))->first();
+
+        return view('member.profile', compact('user', 'archer'));
     }
 
-    /**
-     * Display member achievements
-     */
     public function achievements()
     {
-        return view('member.achievements');
+        $archer = DB::table('archers')->where('user_id', Session::get('user_id'))->first();
+        $achievements = collect();
+
+        if ($archer) {
+            $achievements = DB::table('user_achievements as ua')
+                ->join('achievements as a', 'ua.achievement_id', '=', 'a.achievement_id')
+                ->select(
+                    'a.title',
+                    'a.description',
+                    'a.badge_icon',
+                    'ua.date_awarded'
+                )
+                ->where('ua.archer_id', $archer->archer_id)
+                ->orderByDesc('ua.date_awarded')
+                ->get();
+        }
+
+        return view('member.achievements', compact('achievements'));
     }
 
-    /**
-     * Show form to create new training log
-     */
     public function createLog()
     {
-        return view('member.create_log');
+        $coaches = DB::table('coaches as c')
+            ->join('users as u', 'c.user_id', '=', 'u.user_id')
+            ->select('c.coach_id', 'u.first_name', 'u.last_name')
+            ->orderBy('u.first_name')
+            ->get();
+
+        return view('member.create_log', compact('coaches'));
     }
 
-    /**
-     * Store new training log
-     */
     public function storeLog(Request $request)
     {
         $validated = $request->validate([
-            'date' => 'required|date',
-            'duration' => 'required|numeric|min:0.5',
-            'type' => 'required|in:group,individual,practice,competition',
-            'instructor' => 'nullable|string',
-            'accuracy' => 'nullable|numeric|min:0|max:100',
-            'notes' => 'nullable|string|max:500',
+            'coach_id' => 'required|exists:coaches,coach_id',
+            'session_date' => 'required|date',
+            'distance' => 'nullable|integer|min:1',
+            'arrow_count' => 'nullable|integer|min:1',
+            'total_score' => 'nullable|integer|min:0',
+            'coach_rating' => 'nullable|integer|min:1|max:5',
+            'technical_notes' => 'nullable|string|max:1000',
         ]);
 
-        // Store training log in database (implementation pending)
-        // TrainingLog::create([...]);
+        $archer = DB::table('archers')->where('user_id', Session::get('user_id'))->first();
+        if (!$archer) {
+            return back()->withErrors(['archer' => 'Archer record not found.']);
+        }
 
-        return redirect()->route('member.history')
-                       ->with('success', 'Training log created successfully!');
+        DB::table('training_logs')->insert([
+            'archer_id' => $archer->archer_id,
+            'coach_id' => $validated['coach_id'],
+            'session_date' => $validated['session_date'],
+            'distance' => $validated['distance'] ?? null,
+            'arrow_count' => $validated['arrow_count'] ?? null,
+            'total_score' => $validated['total_score'] ?? null,
+            'coach_rating' => $validated['coach_rating'] ?? null,
+            'technical_notes' => $validated['technical_notes'] ?? null,
+            'created_at' => now(),
+        ]);
+
+        return redirect()->route('member.history')->with('success', 'Training log created.');
     }
 
-    /**
-     * Update member profile
-     */
+    public function updateLog(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'session_date' => 'required|date',
+            'distance' => 'nullable|integer|min:1',
+            'total_score' => 'nullable|integer|min:0',
+            'coach_rating' => 'nullable|integer|min:1|max:5',
+            'technical_notes' => 'nullable|string|max:1000',
+        ]);
+
+        DB::table('training_logs')->where('log_id', $id)->update([
+            'session_date' => $validated['session_date'],
+            'distance' => $validated['distance'] ?? null,
+            'total_score' => $validated['total_score'] ?? null,
+            'coach_rating' => $validated['coach_rating'] ?? null,
+            'technical_notes' => $validated['technical_notes'] ?? null,
+        ]);
+
+        return back()->with('success', 'Training log updated.');
+    }
+
+    public function deleteLog($id)
+    {
+        DB::table('training_logs')->where('log_id', $id)->delete();
+        return back()->with('success', 'Training log deleted.');
+    }
+
     public function updateProfile(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . auth()->id(),
-            'phone' => 'nullable|string',
+            'first_name' => 'required|string|max:100',
+            'last_name'  => 'required|string|max:100',
+            'email'      => 'required|email|unique:users,email,' . Session::get('user_id') . ',user_id',
+            'experience_level' => 'nullable|string|max:50',
+            'ranking' => 'nullable|string|max:50',
         ]);
 
-        auth()->user()->update($validated);
+        DB::table('users')->where('user_id', Session::get('user_id'))->update([
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'email' => $validated['email'],
+        ]);
 
-        return redirect()->route('member.profile')
-                       ->with('success', 'Profile updated successfully!');
+        DB::table('archers')->where('user_id', Session::get('user_id'))->update([
+            'experience_level' => $validated['experience_level'] ?? null,
+            'ranking' => $validated['ranking'] ?? null,
+        ]);
+
+        return back()->with('success', 'Profile updated successfully.');
     }
 
-    /**
-     * Update password
-     */
     public function updatePassword(Request $request)
     {
-         $validated = $request->validate([
+        $validated = $request->validate([
             'current_password' => 'required',
             'new_password' => 'required|string|min:8|confirmed',
         ]);
 
-        // Check current password (implementation pending)
-        // if (!Hash::check($validated['current_password'], auth()->user()->password)) {
-        //     return back()->with('error', 'Current password is incorrect');
-        // }
+        $user = DB::table('users')->where('user_id', Session::get('user_id'))->first();
+        if (!$user || !Hash::check($validated['current_password'], $user->password_hash)) {
+            return back()->withErrors(['current_password' => 'Current password is incorrect']);
+        }
 
-        // Update password (implementation pending)
-        // auth()->user()->update(['password' => Hash::make($validated['new_password'])]);
+        DB::table('users')->where('user_id', Session::get('user_id'))->update([
+            'password_hash' => Hash::make($validated['new_password']),
+        ]);
 
-        return redirect()->route('member.profile')
-                       ->with('success', 'Password updated successfully!');
+        return back()->with('success', 'Password updated successfully.');
     }
 }

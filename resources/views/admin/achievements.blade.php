@@ -23,20 +23,20 @@
         <!-- Stats Row -->
         <div class="stats-row">
             <div class="stat-box">
-                <div class="stat-number">8</div>
+                <div class="stat-number">{{ $achievements->count() }}</div>
                 <div class="stat-label">Total Achievements</div>
             </div>
             <div class="stat-box">
-                <div class="stat-number">12</div>
-                <div class="stat-label">Most Awarded</div>
+                <div class="stat-number">{{ $achievements->where('criteria_type','accuracy')->count() }}</div>
+                <div class="stat-label">Accuracy Type</div>
             </div>
             <div class="stat-box">
-                <div class="stat-number">2</div>
-                <div class="stat-label">Pending Review</div>
+                <div class="stat-number">{{ $achievements->where('criteria_type','sessions')->count() }}</div>
+                <div class="stat-label">Session Type</div>
             </div>
             <div class="stat-box">
-                <div class="stat-number">6</div>
-                <div class="stat-label">Active Achievements</div>
+                <div class="stat-number">{{ $achievements->where('criteria_type','hours')->count() }}</div>
+                <div class="stat-label">Hours Type</div>
             </div>
         </div>
 
@@ -68,61 +68,20 @@
                     </tr>
                 </thead>
                 <tbody id="achievementsTableBody">
-                    <tr data-criteria="accuracy">
-                        <td>🏆</td>
-                        <td>Marksman</td>
-                        <td>Achieved 90% accuracy</td>
-                        <td><span class="criteria-badge accuracy">Accuracy</span></td>
-                        <td>90%</td>
-                        <td>
-                            <button class="btn-edit" onclick="openEditModal(this)"><i class="fas fa-edit"></i> Edit</button>
-                            <button class="btn-delete" onclick="openDeleteModal(this)"><i class="fas fa-trash"></i> Delete</button>
-                        </td>
-                    </tr>
-                    <tr data-criteria="sessions">
-                        <td>🎯</td>
-                        <td>Sharpshooter</td>
-                        <td>Completed 20 training sessions</td>
-                        <td><span class="criteria-badge sessions">Sessions</span></td>
-                        <td>20</td>
-                        <td>
-                            <button class="btn-edit" onclick="openEditModal(this)"><i class="fas fa-edit"></i> Edit</button>
-                            <button class="btn-delete" onclick="openDeleteModal(this)"><i class="fas fa-trash"></i> Delete</button>
-                        </td>
-                    </tr>
-                    <tr data-criteria="hours">
-                        <td>⭐</td>
-                        <td>Dedicated Archer</td>
-                        <td>40+ hours of training</td>
-                        <td><span class="criteria-badge hours">Hours</span></td>
-                        <td>40</td>
-                        <td>
-                            <button class="btn-edit" onclick="openEditModal(this)"><i class="fas fa-edit"></i> Edit</button>
-                            <button class="btn-delete" onclick="openDeleteModal(this)"><i class="fas fa-trash"></i> Delete</button>
-                        </td>
-                    </tr>
-                    <tr data-criteria="consecutive">
-                        <td>🔥</td>
-                        <td>On Fire</td>
-                        <td>5 consecutive perfect sessions</td>
-                        <td><span class="criteria-badge consecutive">Consecutive</span></td>
-                        <td>5</td>
-                        <td>
-                            <button class="btn-edit" onclick="openEditModal(this)"><i class="fas fa-edit"></i> Edit</button>
-                            <button class="btn-delete" onclick="openDeleteModal(this)"><i class="fas fa-trash"></i> Delete</button>
-                        </td>
-                    </tr>
-                    <tr data-criteria="sessions">
-                        <td>🏅</td>
-                        <td>Team Player</td>
-                        <td>Mentored 3 new members</td>
-                        <td><span class="criteria-badge sessions">Sessions</span></td>
-                        <td>3</td>
-                        <td>
-                            <button class="btn-edit" onclick="openEditModal(this)"><i class="fas fa-edit"></i> Edit</button>
-                            <button class="btn-delete" onclick="openDeleteModal(this)"><i class="fas fa-trash"></i> Delete</button>
-                        </td>
-                    </tr>
+                    @foreach ($achievements as $a)
+                        <tr data-criteria="{{ $a->criteria_type }}">
+                            <td>{{ $a->badge_icon }}</td>
+                            <td>{{ $a->title }}</td>
+                            <td>{{ $a->description }}</td>
+                            <td><span class="criteria-badge {{ $a->criteria_type }}">{{ $a->criteria_type }}</span></td>
+                            <td>{{ $a->criteria_value }}</td>
+                            <td>
+                                <button class="btn-edit" onclick="openEditModal(this)" data-id="{{ $a->achievement_id }}"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn-delete" onclick="openDeleteModal(this)" data-id="{{ $a->achievement_id }}"><i class="fas fa-trash"></i> Delete</button>
+                                <button class="btn-edit" onclick="openAwardModal(this)" data-id="{{ $a->achievement_id }}"><i class="fas fa-award"></i> Award</button>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -142,50 +101,51 @@
                 <h2>Create New Achievement</h2>
                 <button class="modal-close" onclick="closeCreateModal()">×</button>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Badge Icon</label>
-                    <div class="icon-selector" id="createIconSelector">
-                        <button type="button" class="icon-btn" data-icon="trophy" onclick="selectIcon(this, 'createIconSelector')" title="Trophy"><i class="fas fa-trophy"></i></button>
-                        <button type="button" class="icon-btn" data-icon="star" onclick="selectIcon(this, 'createIconSelector')" title="Star"><i class="fas fa-star"></i></button>
-                        <button type="button" class="icon-btn" data-icon="medal" onclick="selectIcon(this, 'createIconSelector')" title="Medal"><i class="fas fa-medal"></i></button>
-                        <button type="button" class="icon-btn" data-icon="award" onclick="selectIcon(this, 'createIconSelector')" title="Award"><i class="fas fa-award"></i></button>
-                        <button type="button" class="icon-btn" data-icon="target" onclick="selectIcon(this, 'createIconSelector')" title="Target"><i class="fas fa-bullseye"></i></button>
-                        <button type="button" class="icon-btn" data-icon="crown" onclick="selectIcon(this, 'createIconSelector')" title="Crown"><i class="fas fa-crown"></i></button>
-                        <button type="button" class="icon-btn" data-icon="gem" onclick="selectIcon(this, 'createIconSelector')" title="Gem"><i class="fas fa-gem"></i></button>
-                        <button type="button" class="icon-btn" data-icon="fire" onclick="selectIcon(this, 'createIconSelector')" title="Fire"><i class="fas fa-fire"></i></button>
-                    </div>
-                    <input type="hidden" id="selectedIcon" value="">
-                </div>
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" placeholder="Achievement title" class="form-input">
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <input type="text" placeholder="Achievement description" class="form-input">
-                </div>
-                <div class="form-row">
+            <form method="POST" action="{{ route('admin.achievements.create') }}">
+                @csrf
+                <div class="modal-body">
                     <div class="form-group">
-                        <label>Criteria Type</label>
-                        <select class="form-input">
-                            <option>Select criteria type...</option>
-                            <option>Accuracy</option>
-                            <option>Sessions</option>
-                            <option>Hours</option>
-                            <option>Consecutive</option>
-                        </select>
+                        <label>Badge Icon</label>
+                        <div class="icon-selector" id="createIconSelector">
+                            <button type="button" class="icon-btn" data-icon="🏆" onclick="selectIcon(this, 'createIconSelector')" title="Trophy">🏆</button>
+                            <button type="button" class="icon-btn" data-icon="⭐" onclick="selectIcon(this, 'createIconSelector')" title="Star">⭐</button>
+                            <button type="button" class="icon-btn" data-icon="🎯" onclick="selectIcon(this, 'createIconSelector')" title="Target">🎯</button>
+                            <button type="button" class="icon-btn" data-icon="🔥" onclick="selectIcon(this, 'createIconSelector')" title="Fire">🔥</button>
+                            <button type="button" class="icon-btn" data-icon="🏅" onclick="selectIcon(this, 'createIconSelector')" title="Medal">🏅</button>
+                            <button type="button" class="icon-btn" data-icon="💎" onclick="selectIcon(this, 'createIconSelector')" title="Gem">💎</button>
+                        </div>
+                        <input type="hidden" id="selectedIcon" name="badge_icon" value="">
                     </div>
                     <div class="form-group">
-                        <label>Criteria Value</label>
-                        <input type="number" placeholder="e.g., 90" class="form-input">
+                        <label>Title</label>
+                        <input type="text" name="title" placeholder="Achievement title" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" name="description" placeholder="Achievement description" class="form-input">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Criteria Type</label>
+                            <select name="criteria_type" class="form-input">
+                                <option value="">Select criteria type...</option>
+                                <option value="accuracy">Accuracy</option>
+                                <option value="sessions">Sessions</option>
+                                <option value="hours">Hours</option>
+                                <option value="consecutive">Consecutive</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Criteria Value</label>
+                            <input type="number" name="criteria_value" placeholder="e.g., 90" class="form-input">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn-cancel" onclick="closeCreateModal()">Cancel</button>
-                <button class="modal-btn-submit">Create Achievement</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="modal-btn-cancel" onclick="closeCreateModal()">Cancel</button>
+                    <button type="submit" class="modal-btn-submit">Create Achievement</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -196,50 +156,53 @@
                 <h2>Edit Achievement</h2>
                 <button class="modal-close" onclick="closeEditModal()">×</button>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Badge Icon</label>
-                    <div class="icon-selector" id="editIconSelector">
-                        <button type="button" class="icon-btn" data-icon="trophy" onclick="selectIcon(this, 'editIconSelector')" title="Trophy"><i class="fas fa-trophy"></i></button>
-                        <button type="button" class="icon-btn" data-icon="star" onclick="selectIcon(this, 'editIconSelector')" title="Star"><i class="fas fa-star"></i></button>
-                        <button type="button" class="icon-btn" data-icon="medal" onclick="selectIcon(this, 'editIconSelector')" title="Medal"><i class="fas fa-medal"></i></button>
-                        <button type="button" class="icon-btn" data-icon="award" onclick="selectIcon(this, 'editIconSelector')" title="Award"><i class="fas fa-award"></i></button>
-                        <button type="button" class="icon-btn" data-icon="target" onclick="selectIcon(this, 'editIconSelector')" title="Target"><i class="fas fa-bullseye"></i></button>
-                        <button type="button" class="icon-btn" data-icon="crown" onclick="selectIcon(this, 'editIconSelector')" title="Crown"><i class="fas fa-crown"></i></button>
-                        <button type="button" class="icon-btn" data-icon="gem" onclick="selectIcon(this, 'editIconSelector')" title="Gem"><i class="fas fa-gem"></i></button>
-                        <button type="button" class="icon-btn" data-icon="fire" onclick="selectIcon(this, 'editIconSelector')" title="Fire"><i class="fas fa-fire"></i></button>
-                    </div>
-                    <input type="hidden" id="selectedEditIcon" value="">
-                </div>
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" id="editTitle" placeholder="Achievement title" class="form-input">
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <input type="text" id="editDescription" placeholder="Achievement description" class="form-input">
-                </div>
-                <div class="form-row">
+            <form method="POST" action="{{ route('admin.achievements.update', ['id' => '__ID__']) }}" id="editAchievementForm" data-action="{{ route('admin.achievements.update', ['id' => '__ID__']) }}">
+                @csrf
+                @method('PATCH')
+                <input type="hidden" name="id" id="editAchievementId">
+                <div class="modal-body">
                     <div class="form-group">
-                        <label>Criteria Type</label>
-                        <select id="editCriteria" class="form-input">
-                            <option>Select criteria type...</option>
-                            <option>Accuracy</option>
-                            <option>Sessions</option>
-                            <option>Hours</option>
-                            <option>Consecutive</option>
-                        </select>
+                        <label>Badge Icon</label>
+                        <div class="icon-selector" id="editIconSelector">
+                            <button type="button" class="icon-btn" data-icon="🏆" onclick="selectIcon(this, 'editIconSelector')" title="Trophy">🏆</button>
+                            <button type="button" class="icon-btn" data-icon="⭐" onclick="selectIcon(this, 'editIconSelector')" title="Star">⭐</button>
+                            <button type="button" class="icon-btn" data-icon="🎯" onclick="selectIcon(this, 'editIconSelector')" title="Target">🎯</button>
+                            <button type="button" class="icon-btn" data-icon="🔥" onclick="selectIcon(this, 'editIconSelector')" title="Fire">🔥</button>
+                            <button type="button" class="icon-btn" data-icon="🏅" onclick="selectIcon(this, 'editIconSelector')" title="Medal">🏅</button>
+                            <button type="button" class="icon-btn" data-icon="💎" onclick="selectIcon(this, 'editIconSelector')" title="Gem">💎</button>
+                        </div>
+                        <input type="hidden" id="selectedEditIcon" name="badge_icon" value="">
                     </div>
                     <div class="form-group">
-                        <label>Criteria Value</label>
-                        <input type="number" id="editValue" placeholder="e.g., 90" class="form-input">
+                        <label>Title</label>
+                        <input type="text" id="editTitle" name="title" placeholder="Achievement title" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" id="editDescription" name="description" placeholder="Achievement description" class="form-input">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Criteria Type</label>
+                            <select id="editCriteria" name="criteria_type" class="form-input">
+                                <option value="">Select criteria type...</option>
+                                <option value="accuracy">Accuracy</option>
+                                <option value="sessions">Sessions</option>
+                                <option value="hours">Hours</option>
+                                <option value="consecutive">Consecutive</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Criteria Value</label>
+                            <input type="number" id="editValue" name="criteria_value" placeholder="e.g., 90" class="form-input">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn-cancel" onclick="closeEditModal()">Cancel</button>
-                <button class="modal-btn-submit">Save Changes</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="modal-btn-cancel" onclick="closeEditModal()">Cancel</button>
+                    <button type="submit" class="modal-btn-submit">Save Changes</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -250,28 +213,61 @@
                 <h2>Delete Achievement</h2>
                 <button class="modal-close" onclick="closeDeleteModal()">×</button>
             </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete <strong id="deleteTitle"></strong>? This action cannot be undone.</p>
+            <form method="POST" action="{{ route('admin.achievements.delete', ['id' => '__ID__']) }}" id="deleteAchievementForm" data-action="{{ route('admin.achievements.delete', ['id' => '__ID__']) }}">
+                @csrf
+                @method('DELETE')
+                <input type="hidden" name="id" id="deleteAchievementId">
+                <div class="modal-body">
+                    <p>Are you sure you want to delete <strong id="deleteTitle"></strong>? This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="modal-btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+                    <button type="submit" class="modal-btn-delete">Delete Achievement</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Award Achievement Modal -->
+    <div id="awardAchievementModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Award Achievement</h2>
+                <button class="modal-close" onclick="closeAwardModal()">×</button>
             </div>
-            <div class="modal-footer">
-                <button class="modal-btn-cancel" onclick="closeDeleteModal()">Cancel</button>
-                <button class="modal-btn-delete">Delete Achievement</button>
-            </div>
+            <form method="POST" action="{{ route('admin.achievements.award') }}">
+                @csrf
+                <div class="modal-body">
+                    <input type="hidden" id="awardAchievementId" name="achievement_id">
+                    <div class="form-group">
+                        <label>Archer</label>
+                        <select name="archer_id" class="form-input" required>
+                            <option value="">Select archer...</option>
+                            @foreach ($archers as $archer)
+                                <option value="{{ $archer->archer_id }}">{{ $archer->first_name }} {{ $archer->last_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Date Awarded</label>
+                        <input type="date" name="date_awarded" class="form-input">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="modal-btn-cancel" onclick="closeAwardModal()">Cancel</button>
+                    <button type="submit" class="modal-btn-submit">Award</button>
+                </div>
+            </form>
         </div>
     </div>
 
     <script>
-        // Pagination variables
         const itemsPerPage = 5;
         let currentPage = 1;
-        let allRows = [];
 
         const achievementSearch = document.getElementById('achievementSearch');
         const criteriaFilter = document.getElementById('criteriaFilter');
         const rows = document.querySelectorAll('#achievementsTableBody tr');
-
-        // Store all rows
-        allRows = Array.from(rows);
 
         function filterTable() {
             const searchTerm = achievementSearch.value.toLowerCase();
@@ -381,7 +377,6 @@
 
         updatePagination();
 
-        // Modal functions
         function openCreateModal() {
             document.getElementById('createAchievementModal').classList.add('active');
         }
@@ -395,20 +390,32 @@
             const buttons = selector.querySelectorAll('.icon-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
+
+            if (selectorId === 'createIconSelector') {
+                document.getElementById('selectedIcon').value = button.dataset.icon;
+            } else {
+                document.getElementById('selectedEditIcon').value = button.dataset.icon;
+            }
         }
 
         function openEditModal(btn) {
             const row = btn.closest('tr');
-            const icon = row.cells[0].textContent;
-            const title = row.cells[1].textContent;
-            const description = row.cells[2].textContent;
-            const criteria = row.cells[3].textContent.trim();
-            const value = row.cells[4].textContent;
+            const icon = row.cells[0].textContent.trim();
+            const title = row.cells[1].textContent.trim();
+            const description = row.cells[2].textContent.trim();
+            const criteria = row.getAttribute('data-criteria');
+            const value = row.cells[4].textContent.trim();
+            const id = btn.getAttribute('data-id');
 
             document.getElementById('editTitle').value = title;
             document.getElementById('editDescription').value = description;
-            document.getElementById('editCriteria').value = criteria.charAt(0).toUpperCase() + criteria.slice(1);
+            document.getElementById('editCriteria').value = criteria;
             document.getElementById('editValue').value = value;
+            document.getElementById('selectedEditIcon').value = icon;
+            document.getElementById('editAchievementId').value = id;
+
+            const editForm = document.getElementById('editAchievementForm');
+            editForm.action = editForm.dataset.action.replace('__ID__', id);
 
             document.getElementById('editAchievementModal').classList.add('active');
         }
@@ -420,7 +427,14 @@
         function openDeleteModal(btn) {
             const row = btn.closest('tr');
             const title = row.cells[1].textContent;
+            const id = btn.getAttribute('data-id');
+
             document.getElementById('deleteTitle').textContent = title;
+            document.getElementById('deleteAchievementId').value = id;
+
+            const deleteForm = document.getElementById('deleteAchievementForm');
+            deleteForm.action = deleteForm.dataset.action.replace('__ID__', id);
+
             document.getElementById('deleteAchievementModal').classList.add('active');
         }
 
@@ -428,14 +442,26 @@
             document.getElementById('deleteAchievementModal').classList.remove('active');
         }
 
+        function openAwardModal(btn) {
+            const id = btn.getAttribute('data-id');
+            document.getElementById('awardAchievementId').value = id;
+            document.getElementById('awardAchievementModal').classList.add('active');
+        }
+
+        function closeAwardModal() {
+            document.getElementById('awardAchievementModal').classList.remove('active');
+        }
+
         window.addEventListener('click', function(e) {
             const createModal = document.getElementById('createAchievementModal');
             const editModal = document.getElementById('editAchievementModal');
             const deleteModal = document.getElementById('deleteAchievementModal');
+            const awardModal = document.getElementById('awardAchievementModal');
 
             if (e.target == createModal) createModal.classList.remove('active');
             if (e.target == editModal) editModal.classList.remove('active');
             if (e.target == deleteModal) deleteModal.classList.remove('active');
+            if (e.target == awardModal) awardModal.classList.remove('active');
         });
     </script>
 @endsection

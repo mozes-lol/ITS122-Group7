@@ -11,20 +11,20 @@
     <!-- Stats Grid -->
     <div class="dashboard-grid">
         <div class="stat-card">
-            <h3>Total Training Hours</h3>
-            <div class="stat-value">45</div>
+            <h3>Total Training Sessions</h3>
+            <div class="stat-value">{{ $stats['total_sessions'] ?? 0 }}</div>
         </div>
         <div class="stat-card success">
-            <h3>Training Sessions</h3>
-            <div class="stat-value">22</div>
+            <h3>Achievements</h3>
+            <div class="stat-value">{{ $stats['achievements'] ?? 0 }}</div>
         </div>
         <div class="stat-card warning">
             <h3>Current Skill Level</h3>
-            <div class="stat-value">Intermediate</div>
+            <div class="stat-value">{{ $stats['experience_level'] ?? 'N/A' }}</div>
         </div>
         <div class="stat-card danger">
-            <h3>Achievements</h3>
-            <div class="stat-value">8</div>
+            <h3>Recent Logs</h3>
+            <div class="stat-value">{{ $recentLogs->count() }}</div>
         </div>
     </div>
 
@@ -41,26 +41,18 @@
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Duration</th>
-                            <th>Notes</th>
+                            <th>Distance</th>
+                            <th>Score</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>March 10, 2026</td>
-                            <td>2 hours</td>
-                            <td>Accuracy training</td>
-                        </tr>
-                        <tr>
-                            <td>March 8, 2026</td>
-                            <td>1.5 hours</td>
-                            <td>Distance shooting</td>
-                        </tr>
-                        <tr>
-                            <td>March 5, 2026</td>
-                            <td>2 hours</td>
-                            <td>Form improvement</td>
-                        </tr>
+                        @foreach ($recentLogs as $log)
+                            <tr>
+                                <td>{{ \Carbon\Carbon::parse($log->session_date)->format('F d, Y') }}</td>
+                                <td>{{ $log->distance }}m</td>
+                                <td>{{ $log->total_score }}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
