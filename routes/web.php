@@ -68,8 +68,9 @@ Route::prefix('coach')->name('coach.')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('member')->name('member.')->group(function () {
-    Route::get('/', [MemberController::class, 'dashboard'])->name('dashboard');
-    Route::get('/dashboard', [MemberController::class, 'dashboard']);
+    Route::get('/', function () {
+        return redirect('/member/history');
+    });
     Route::get('/history', [MemberController::class, 'history'])->name('history');
     Route::get('/profile', [MemberController::class, 'profile'])->name('profile');
     Route::get('/achievements', [MemberController::class, 'achievements'])->name('achievements');
@@ -82,6 +83,5 @@ Route::prefix('member')->name('member.')->group(function () {
 */
 Route::get('/dashboard', function () {
     // TODO: Redirect based on user role
-    return redirect('/member/dashboard');
+    return redirect('/member/history');
 });
-

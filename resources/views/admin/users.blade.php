@@ -87,8 +87,8 @@
                         </td>
                     </tr>
                     <tr data-role="coach" data-status="active">
-                        <td>Maria Coach</td>
-                        <td>maria@example.com</td>
+                        <td>Juan Coach</td>
+                        <td>juan@example.com</td>
                         <td><span class="role-badge coach">Coach</span></td>
                         <td><span class="status-badge active">Active</span></td>
                         <td>

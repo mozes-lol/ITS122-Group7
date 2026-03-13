@@ -52,7 +52,7 @@
                             <td><span class="badge badge-success">Active</span></td>
                         </tr>
                         <tr>
-                            <td>Maria Coach</td>
+                            <td>Juan Coach</td>
                             <td>Coach</td>
                             <td><span class="badge badge-success">Active</span></td>
                         </tr>

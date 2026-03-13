@@ -7,14 +7,6 @@ use Illuminate\Http\Request;
 class MemberController extends Controller
 {
     /**
-     * Display member dashboard
-     */
-    public function dashboard()
-    {
-        return view('member.dashboard');
-    }
-
-    /**
      * Display training history
      */
     public function history()

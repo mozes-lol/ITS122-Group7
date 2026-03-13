@@ -28,9 +28,6 @@
                             <circle cx="12" cy="7" r="4"/>
                         </svg>
                     </div>
-                    <button class="archer-menu-btn">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
                 </div>
                 <div class="archer-card-body">
                     <h3 class="archer-name">Juan Dela Cruz</h3>
@@ -61,9 +58,6 @@
                             <circle cx="12" cy="7" r="4"/>
                         </svg>
                     </div>
-                    <button class="archer-menu-btn">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
                 </div>
                 <div class="archer-card-body">
                     <h3 class="archer-name">Juan Dela Cruz</h3>
@@ -94,9 +88,6 @@
                             <circle cx="12" cy="7" r="4"/>
                         </svg>
                     </div>
-                    <button class="archer-menu-btn">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
                 </div>
                 <div class="archer-card-body">
                     <h3 class="archer-name">Juan Dela Cruz</h3>
@@ -127,9 +118,6 @@
                             <circle cx="12" cy="7" r="4"/>
                         </svg>
                     </div>
-                    <button class="archer-menu-btn">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
                 </div>
                 <div class="archer-card-body">
                     <h3 class="archer-name">Juan Dela Cruz</h3>
@@ -160,9 +148,6 @@
                             <circle cx="12" cy="7" r="4"/>
                         </svg>
                     </div>
-                    <button class="archer-menu-btn">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
                 </div>
                 <div class="archer-card-body">
                     <h3 class="archer-name">Juan Dela Cruz</h3>
@@ -193,9 +178,6 @@
                             <circle cx="12" cy="7" r="4"/>
                         </svg>
                     </div>
-                    <button class="archer-menu-btn">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
                 </div>
                 <div class="archer-card-body">
                     <h3 class="archer-name">Juan Dela Cruz</h3>

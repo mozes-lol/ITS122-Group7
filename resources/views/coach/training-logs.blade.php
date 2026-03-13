@@ -89,7 +89,7 @@
                         </td>
                     </tr>
                     <tr data-distance="25m">
-                        <td>Maria Cruz</td>
+                        <td>Juan Dela Cruz</td>
                         <td>03/10/2026</td>
                         <td>25m</td>
                         <td>12</td>
